@@ -1,9 +1,10 @@
 import { Button, Container } from "@chakra-ui/react"
 
-const NewGameButton = ({ startNewGame }) => {
+const NewGameButton = ({ startNewGame, newGameBtnRef }) => {
 	return (
 		<Container display={'flex'} justifyContent={'center'} >
 			<Button
+				ref={newGameBtnRef}
 				bg={'#11B5E5'}
 				w={'200px'}
 				h={'40px'}

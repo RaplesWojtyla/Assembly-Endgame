@@ -1,5 +1,5 @@
 import { Box, Container, Heading, Text } from '@chakra-ui/react'
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import Navbar from './components/Navbar'
 import Header from './components/Header'
 import GameStatus from './components/GameStatus'
@@ -18,6 +18,7 @@ const App = () => {
 	const [currentWord, setCurrentWord] = useState(getRandomWord)
 	const [guessedLetters, setGuessedLetters] = useState([])
 	const { width, height } = useWindowSize()
+	const newGameBtnRef = useRef(null)
 
 
 	const wrongGuessCount = guessedLetters.filter(letter => !currentWord.includes(letter)).length
@@ -27,6 +28,12 @@ const App = () => {
 	const isGameOver = isGameLost || isGameWon
 	const lastGuessedLetter = guessedLetters[guessedLetters.length - 1]
 	const isLastGuessedIncorrect = lastGuessedLetter && !currentWord.includes(lastGuessedLetter)
+
+	useEffect(() => {
+		if (isGameOver) {
+			newGameBtnRef.current.scrollIntoView({ behavior: 'smooth' })
+		}
+	}, [isGameOver])
 
 	const addGuessLetter = (letter) => {
 		setGuessedLetters(prevGuessedLetters => prevGuessedLetters.includes(letter) ? prevGuessedLetters : [
@@ -85,7 +92,10 @@ const App = () => {
 					isGameOver={isGameOver}
 				/>
 				{isGameOver && (
-					<NewGameButton startNewGame={startNewGame} />
+					<NewGameButton 
+						startNewGame={startNewGame} 
+						newGameBtnRef={newGameBtnRef}
+					/>
 				)}
 			</Container>
 		</Box>
